@@ -27,7 +27,7 @@ class ContainerChallengeModel(Challenges):
 
 class ContainerInfoModel(db.Model):
     __mapper_args__ = {"polymorphic_identity": "container_info"}
-    container_id = db.Column(db.String(2048), primary_key=True)
+    container_id = db.Column(db.String(512), primary_key=True)
     challenge_id = db.Column(
         db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE")
     )
@@ -44,5 +44,5 @@ class ContainerInfoModel(db.Model):
 
 class ContainerSettingsModel(db.Model):
     __mapper_args__ = {"polymorphic_identity": "container_settings"}
-    key = db.Column(db.String(2048), primary_key=True)
+    key = db.Column(db.String(512), primary_key=True)
     value = db.Column(db.Text)
