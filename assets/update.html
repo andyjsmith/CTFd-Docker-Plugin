@@ -1,0 +1,86 @@
+{% extends "admin/challenges/update.html" %}
+
+{% block value %}
+<div class="form-group">
+	<label for="value">Current Value<br>
+		<small class="form-text text-muted">
+			This is how many points the challenge is worth right now.
+		</small>
+	</label>
+	<input type="number" class="form-control chal-value" name="value" value="{{ challenge.value }}" disabled>
+</div>
+
+<div class="form-group">
+	<label for="value">Initial Value<br>
+		<small class="form-text text-muted">
+			This is how many points the challenge was worth initially.
+		</small>
+	</label>
+	<input type="number" class="form-control chal-initial" name="initial" value="{{ challenge.initial }}" required>
+</div>
+
+<div class="form-group">
+	<label for="value">Decay Limit<br>
+		<small class="form-text text-muted">
+			The amount of solves before the challenge reaches its minimum value
+		</small>
+	</label>
+	<input type="number" class="form-control chal-decay" name="decay" value="{{ challenge.decay }}" required>
+</div>
+
+<div class="form-group">
+	<label for="value">Minimum Value<br>
+		<small class="form-text text-muted">
+			This is the lowest that the challenge can be worth
+		</small>
+	</label>
+	<input type="number" class="form-control chal-minimum" name="minimum" value="{{ challenge.minimum }}" required>
+</div>
+
+<div class="form-group">
+	<script>
+		var container_image_selected = "{{ challenge.image }}";
+	</script>
+	<label>
+		Image<br>
+		<small class="form-text text-muted">
+			Name of the Docker image to spin up
+		</small>
+	</label>
+	<select type="text" class="form-control" name="image" placeholder="Enter image" id="container-image"
+		title="Name of the Docker image to spin up" required disabled>
+		<option value="" id="container-image-default" disabled selected>Loading...</option>
+	</select>
+</div>
+
+<div class="form-group">
+	<label>
+		Port<br>
+		<small class="form-text text-muted">
+			Internal container port that should be exposed (external port will be automatically assigned)
+		</small>
+	</label>
+	<input type="number" class="form-control" name="port" value="{{ challenge.port }}" required>
+</div>
+
+<div class="form-group">
+	<label>
+		Command<br>
+		<small class="form-text text-muted">
+			Command to run in the Docker container
+		</small>
+	</label>
+	<input type="text" class="form-control" name="command" value="{{ challenge.command }}">
+</div>
+
+<div class="form-group">
+	<label>
+		Volumes<br>
+		<small class="form-text text-muted">
+			Custom volumes to mount, in JSON. E.g.
+			<pre>{"/home/user1/": {"bind": "/mnt/vol2", "mode": "rw"}, "/var/www": {"bind": "/mnt/vol1", "mode": "ro"}}</pre>
+		</small>
+	</label>
+	<input type="text" class="form-control" name="volumes" value="{{ challenge.volumes }}">
+</div>
+{% endblock %}

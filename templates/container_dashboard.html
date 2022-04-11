@@ -1,0 +1,141 @@
+{% extends "admin/base.html" %}
+
+
+{% block content %}
+
+<style>
+	.containers-kill-btn {
+		padding: 5px;
+		line-height: 0
+	}
+
+	.containers-container {
+		max-width: none;
+	}
+</style>
+
+<div class="jumbotron">
+	<div class="container">
+		<h1>Containers</h1>
+	</div>
+</div>
+<div class="container containers-container">
+	{% with messages = get_flashed_messages() %}
+	{% if messages %}
+	{% for message in messages %}
+	<div class="alert alert-danger" role="alert">
+		{{ message }}
+	</div>
+	{% endfor %}
+	{% endif %}
+	{% endwith %}
+	<button class="btn btn-success" onclick="window.location.reload()"><i class="fas fa-sync"></i></button>
+	<button class="btn btn-danger" id="container-purge-btn" onclick="purgeContainers()" style="float:right">Purge All
+		Containers</button>
+	<a class="btn btn-primary" href="{{ url_for('.route_containers_settings') }}"
+		style="float:right;margin-right:10px">Settings</a>
+
+	{% if connected %}
+	<span class="badge badge-success">Docker Connected</span>
+	{% else %}
+	<span class="badge badge-danger">Docker Not Connected</span>
+	{% endif %}
+
+	<table class="table">
+		<thead>
+			<tr>
+				<td><strong>Container ID</strong>
+				</td>
+				<td><strong>Image</strong>
+				</td>
+				<td><strong>Challenge</strong>
+				</td>
+				<td><strong>Team</strong>
+				</td>
+				<td><strong>Port</strong>
+				</td>
+				<td><strong>Created</strong>
+				</td>
+				<td><strong>Expires</strong>
+				</td>
+				<td><strong>Running</strong>
+				</td>
+				<td><strong>Kill</strong>
+			</tr>
+		</thead>
+		<tbody>
+			{% if containers %}
+			{% for c in containers %}
+			<tr>
+				<td class="container_item" id="{{ c.container_id }}">{{ c.container_id[:12] }}</td>
+				<td>{{ c.challenge.image }}</td>
+				<td>{{ c.challenge.name }} [{{ c.challenge_id }}]</td>
+				<td>{{ c.team.name }} [{{ c.team_id }}]</td>
+				<td>{{ c.port }}</td>
+				<td>{{ c.timestamp|format_time }}</td>
+				<td>{{ c.expires|format_time }}</td>
+				{% if c.is_running %}
+				<td><span class="badge badge-success">Yes</span></td>
+				{% else %}
+				<td><span class="badge badge-danger">No</span></td>
+				{% endif %}
+				<td><button class="btn btn-danger containers-kill-btn"
+						onclick="killContainer('{{ c.container_id }}')"><i class="fa fa-times"></i></button></td>
+			</tr>
+			{% endfor %}
+			{% endif %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+	function purgeContainers() {
+		var path = "/containers/api/purge";
+		var purgeButton = document.getElementById("container-purge-btn");
+
+		purgeButton.setAttribute("disabled", "disabled");
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", path, true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("CSRF-Token", init.csrfNonce);
+		xhr.send();
+		xhr.onload = function () {
+			var data = JSON.parse(this.responseText);
+			if (data.success == undefined) {
+				purgeButton.removeAttribute("disabled");
+			} else {
+				window.location.reload();
+			}
+			console.log(data);
+		};
+	}
+
+	function killContainer(container_id) {
+		var path = "/containers/api/kill";
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", path, true);
+		xhr.setRequestHeader("Content-Type", "application/json");
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("CSRF-Token", init.csrfNonce);
+		xhr.send(JSON.stringify({ container_id: container_id }));
+		xhr.onload = function () {
+			var data = JSON.parse(this.responseText);
+			if (data.success == undefined) {
+				purgeButton.removeAttribute("disabled");
+			} else {
+				window.location.reload();
+			}
+			console.log(data);
+		};
+	}
+
+
+</script>
+{% endblock %}
