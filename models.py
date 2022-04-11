@@ -10,10 +10,10 @@ class ContainerChallengeModel(Challenges):
     id = db.Column(
         db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE"), primary_key=True
     )
-    image = db.Column(db.String)
+    image = db.Column(db.String(65535))
     port = db.Column(db.Integer)
-    command = db.Column(db.String, default="")
-    volumes = db.Column(db.String, default="")
+    command = db.Column(db.String(65535), default="")
+    volumes = db.Column(db.String(65535), default="")
 
     # Dynamic challenge properties
     initial = db.Column(db.Integer, default=0)
@@ -27,7 +27,7 @@ class ContainerChallengeModel(Challenges):
 
 class ContainerInfoModel(db.Model):
     __mapper_args__ = {"polymorphic_identity": "container_info"}
-    container_id = db.Column(db.String, primary_key=True)
+    container_id = db.Column(db.String(65535), primary_key=True)
     challenge_id = db.Column(
         db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE")
     )
@@ -44,5 +44,5 @@ class ContainerInfoModel(db.Model):
 
 class ContainerSettingsModel(db.Model):
     __mapper_args__ = {"polymorphic_identity": "container_settings"}
-    key = db.Column(db.String, primary_key=True)
-    value = db.Column(db.String)
+    key = db.Column(db.String(65535), primary_key=True)
+    value = db.Column(db.String(65535))
