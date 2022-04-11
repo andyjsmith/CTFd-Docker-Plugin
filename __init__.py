@@ -5,15 +5,13 @@ import json
 import datetime
 import math
 
-import docker
 from flask import Blueprint, request, Flask, render_template, url_for, redirect, flash
 
 from CTFd.models import db, Solves
 from CTFd.plugins import register_plugin_assets_directory
 from CTFd.plugins.challenges import CHALLENGE_CLASSES, BaseChallenge
-from CTFd.plugins.migrations import upgrade
 from CTFd.utils.decorators import authed_only, admins_only, during_ctf_time_only, ratelimit, require_verified_emails
-from CTFd.utils.user import get_current_user, is_admin
+from CTFd.utils.user import get_current_user
 from CTFd.utils.modes import get_model
 
 from .models import ContainerChallengeModel, ContainerInfoModel, ContainerSettingsModel
@@ -140,7 +138,7 @@ def settings_to_dict(settings):
 
 
 def load(app: Flask):
-    upgrade()
+    app.db.create_all()
     CHALLENGE_CLASSES["container"] = ContainerChallenge
     register_plugin_assets_directory(
         app, base_path="/plugins/containers/assets/"
