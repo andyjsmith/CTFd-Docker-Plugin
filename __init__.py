@@ -273,7 +273,7 @@ def load(app: Flask):
     @authed_only
     @during_ctf_time_only
     @require_verified_emails
-    @ratelimit(method="POST", limit=5, interval=60)
+    @ratelimit(method="POST", limit=6, interval=60)
     def route_request_container():
         user = get_current_user()
 
@@ -298,7 +298,7 @@ def load(app: Flask):
     @authed_only
     @during_ctf_time_only
     @require_verified_emails
-    @ratelimit(method="POST", limit=1, interval=60)
+    @ratelimit(method="POST", limit=6, interval=60)
     def route_renew_container():
         user = get_current_user()
 
@@ -323,7 +323,7 @@ def load(app: Flask):
     @authed_only
     @during_ctf_time_only
     @require_verified_emails
-    @ratelimit(method="POST", limit=2, interval=60)
+    @ratelimit(method="POST", limit=6, interval=60)
     def route_restart_container():
         user = get_current_user()
 
@@ -351,7 +351,7 @@ def load(app: Flask):
     @authed_only
     @during_ctf_time_only
     @require_verified_emails
-    @ratelimit(method="POST", limit=2, interval=60)
+    @ratelimit(method="POST", limit=10, interval=60)
     def route_stop_container():
         user = get_current_user()
 
