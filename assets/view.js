@@ -133,7 +133,7 @@ function container_reset(challenge_id) {
 }
 
 function container_renew(challenge_id) {
-	var path = "/containers/api/reset";
+	var path = "/containers/api/renew";
 	var renewButton = document.getElementById("container-renew-btn");
 	var requestResult = document.getElementById("container-request-result");
 	var containerExpires = document.getElementById("container-expires");
