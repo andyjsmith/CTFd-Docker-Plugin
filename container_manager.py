@@ -188,7 +188,9 @@ class ContainerManager:
     @run_command
     def get_container_port(self, container_id: str) -> "str|None":
         try:
-            return list(self.client.containers.get(container_id).ports.values())[0][0]["HostPort"]
+            for port in list(self.client.containers.get(container_id).ports.values()):
+                if port is not None:
+                    return port[0]["HostPort"]
         except (KeyError, IndexError):
             return None
 
