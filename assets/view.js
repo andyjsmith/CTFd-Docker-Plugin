@@ -57,6 +57,9 @@ function container_request(challenge_id) {
 	var requestResult = document.getElementById("container-request-result");
 	var connectionInfo = document.getElementById("container-connection-info");
 	var containerExpires = document.getElementById("container-expires");
+	var containerExpiresTime = document.getElementById(
+		"container-expires-time"
+	);
 	var requestError = document.getElementById("container-request-error");
 
 	requestButton.setAttribute("disabled", "disabled");
@@ -88,6 +91,9 @@ function container_request(challenge_id) {
 			containerExpires.innerHTML = Math.ceil(
 				(new Date(data.expires * 1000) - new Date()) / 1000 / 60
 			);
+			containerExpiresTime.innerHTML = new Date(
+				data.expires * 1000
+			).toLocaleTimeString();
 			requestResult.style.display = "";
 		}
 		console.log(data);
@@ -98,6 +104,10 @@ function container_reset(challenge_id) {
 	var path = "/containers/api/reset";
 	var resetButton = document.getElementById("container-reset-btn");
 	var requestResult = document.getElementById("container-request-result");
+	var containerExpires = document.getElementById("container-expires");
+	var containerExpiresTime = document.getElementById(
+		"container-expires-time"
+	);
 	var connectionInfo = document.getElementById("container-connection-info");
 	var requestError = document.getElementById("container-request-error");
 
@@ -125,6 +135,12 @@ function container_reset(challenge_id) {
 			// Success
 			requestError.style.display = "none";
 			connectionInfo.innerHTML = data.hostname + ":" + data.port;
+			containerExpires.innerHTML = Math.ceil(
+				(new Date(data.expires * 1000) - new Date()) / 1000 / 60
+			);
+			containerExpiresTime.innerHTML = new Date(
+				data.expires * 1000
+			).toLocaleTimeString();
 			requestResult.style.display = "";
 			resetButton.removeAttribute("disabled");
 		}
@@ -137,6 +153,9 @@ function container_renew(challenge_id) {
 	var renewButton = document.getElementById("container-renew-btn");
 	var requestResult = document.getElementById("container-request-result");
 	var containerExpires = document.getElementById("container-expires");
+	var containerExpiresTime = document.getElementById(
+		"container-expires-time"
+	);
 	var requestError = document.getElementById("container-request-error");
 
 	renewButton.setAttribute("disabled", "disabled");
@@ -166,6 +185,9 @@ function container_renew(challenge_id) {
 			containerExpires.innerHTML = Math.ceil(
 				(new Date(data.expires * 1000) - new Date()) / 1000 / 60
 			);
+			containerExpiresTime.innerHTML = new Date(
+				data.expires * 1000
+			).toLocaleTimeString();
 			renewButton.removeAttribute("disabled");
 		}
 		console.log(data);
