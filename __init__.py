@@ -386,6 +386,17 @@ def load(app: Flask):
 
         return kill_container(request.json.get("container_id"))
 
+    @containers_bp.route('/api/purge', methods=['POST'])
+    @admins_only
+    def route_purge_containers():
+        containers: "list[ContainerInfoModel]" = ContainerInfoModel.query.all()
+        for container in containers:
+            try:
+                kill_container(container.container_id)
+            except ContainerException:
+                pass
+        return {"success": "Purged all containers"}, 200
+
     @containers_bp.route('/api/images', methods=['GET'])
     @admins_only
     def route_get_images():
