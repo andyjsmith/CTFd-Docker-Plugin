@@ -15,3 +15,5 @@ If you need to specify advanced options like the volumes, read the [Docker SDK f
 When a user clicks on a container challenge, a button labeled "Get Connection Info" appears. Clicking it shows the information below with a random port assignment.
 
 ![Challenge dialog](dialog.png)
+
+A note, we used hidden teams as non-school teams in PCTF 2022 so if you want them to count for decreasing the dynamic challenge points, you need to remove the `Model.hidden == False,` line from the `calculate_value` function in `__init__.py`.
